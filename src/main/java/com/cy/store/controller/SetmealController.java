@@ -88,7 +88,7 @@ public class SetmealController {
             return new Result(false,MessageConstant.PIC_UPLOAD_FAIL);
         }
         //使用uuid作为文件名，防止生成的临时文件重复
-        final File excelFile =File.createTempFile("imagesFile-" + System.currentTimeMillis(), prefix);
+        final File excelFile = File.createTempFile("imagesFile-" + System.currentTimeMillis(), prefix);
         //将Multifile转换成File
         mulipartFilet.transferTo(excelFile);
 
