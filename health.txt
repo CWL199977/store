@@ -1,0 +1,93 @@
+---------------------------------01、项目概述和环境搭建--------------------------------------
+一、系统架构的演变
+	1、单体架构：所有功能模块都在一个war包里，问题：
+		      代码耦合、迭代困难、技术债务、扩展受限
+	2、分布式架构：按照业务逻辑把系统拆分成独立的模块，问题：
+		     公共业务逻辑无法复用，eg：登录，搜索
+        3、SOA架构：在分布式架构的基础上，把模块拆分成服务层和表现层，问题：
+	       	    ESB：mule不支持集群、wso2臃肿
+	4、health：SOA+dubbo			
+二、dubbo介绍
+	1、什么是dubbo?
+		是阿里巴巴一个开源的rpc框架，能和spring无缝集成，dubbo的角色如下：
+			consumer：服务消费者(controller)
+			
+			registry：注册中心(zookeeper)
+
+			provider：服务提供者(service、mapper)
+	2、zookper介绍
+		1、什么是zookeeper？
+			zookeeper负责地址的注册和查找，时服务提供者和服务消费者的注册中心
+		2、zookeeper的安装和启动
+			1、安装
+				a、上传并解压
+					tar -zxvf zookeeper-3.4.11.tar.gz -C /usr/local
+			        b、拷贝配置文件
+					cd /usr/local/zookeeper-3.4.11/conf 
+					cp zoo_sample.cfg zoo.cfg
+				c、修改配置文件
+					vim zoo.cfg：
+						dataDir=/usr/local/zookeeper-3.4.11/data
+				d、创建目录
+					cd /usr/local/zookeeper-3.4.11
+					mkdir data
+		3、启动和关闭
+			./zkServer.sh start
+			./zkServer.sh stop
+			./zkServer.sh status
+			./zkServer.sh restart
+三、dubbo入门
+	1、创建工程
+		dubbox_parent：定义依赖
+			dubbox_interface：service
+			dubbox_provider：serviceImpl
+			dubbox_consumer：controller
+
+	2、provider：发布服务
+		1、application.properties
+			dubbo.registry.address=zookeeper://192.168.116.129:2181 #zookeeper地址
+			dubbo.application.name=dubbox-provider #注册到zookeeper的服务名，方便统计
+			dubbo.protocol.name=dubbo #协议
+		2、service
+			@Service//dubbo提供
+			public HelloServiceImpl implements HelloService{
+			}
+		3、App
+			@EnableDubbo//开启dubbo注解扫描
+
+	3、consumer：引用服务
+		1、application.properties
+			dubbo.registry.address=zookeeper://192.168.116.129:2181 #zookeeper地址
+			dubbo.application.name=dubbox-provider #注册到zookeeper的服务名，方便统计
+			dubbo.protocol.name=dubbo #协议
+		2、controller
+			public class HelloController{
+				@Reference//dubbo提供
+				private HelloService helloService;
+			}
+		3、App
+			@EnableDubbo//开启dubbo注解扫描
+四、工程搭建
+	health_parent：管理依赖的....
+		health_backend：controller、html
+		health_provider：service、mapper
+		health_interface：service接口
+		health_common：pojo和工具栏
+
+	问题：为什么只在父工程定义版本号？
+		  1、避免继承父工程2个T的依赖   2、方便升级
+---------------------------------02、检查项管理----------------------------------
+1、什么是检查项？
+    身高、体重、血压、红细胞
+2、表
+    t_checkitem(name, sex, age, price)
+
+
+
+
+
+
+
+
+
+
