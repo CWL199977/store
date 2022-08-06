@@ -72,30 +72,33 @@ public class SetmealController {
         }
     }
 
-
+    /**
+     * 上传图片到浏览器
+     * @param mulipartFilet 图片文件
+     * @return 图片的url
+     * @throws IOException 文件上传异常
+     */
     @RequestMapping("/upload")
-    public Result upload(@RequestParam("imgFile")MultipartFile mulipartFilet) throws IOException {
+    public Result upload(@RequestParam("imgFile") MultipartFile mulipartFilet) throws IOException {
         String fileName = mulipartFilet.getOriginalFilename();
         //判断有无后缀
-        if (fileName.lastIndexOf(".")<0) {
-            return new Result(false,MessageConstant.PIC_UPLOAD_FAIL);
+        if (fileName.lastIndexOf(".") < 0) {
+            return new Result(false, MessageConstant.PIC_UPLOAD_FAIL);
         }
         //获取文件后缀
         String prefix = fileName.substring(fileName.lastIndexOf("."));
 
-        if(!prefix.equalsIgnoreCase(".jpg")&&!prefix.equalsIgnoreCase(".jpeg")
-                && !prefix.equalsIgnoreCase(".svg")){
-            return new Result(false,MessageConstant.PIC_UPLOAD_FAIL);
+        if (!prefix.equalsIgnoreCase(".jpg") && !prefix.equalsIgnoreCase(".jpeg")
+                && !prefix.equalsIgnoreCase(".svg")) {
+            return new Result(false, MessageConstant.PIC_UPLOAD_FAIL);
         }
         //使用uuid作为文件名，防止生成的临时文件重复
         final File excelFile = File.createTempFile("imagesFile-" + System.currentTimeMillis(), prefix);
         //将Multifile转换成File
         mulipartFilet.transferTo(excelFile);
-
         //调用工具上传文件
         String imageName = TencentUtil.uploadfile(excelFile, "avatar");
-
-        return new Result(true, MessageConstant.PIC_UPLOAD_SUCCESS,fileName);
+        return new Result(true, MessageConstant.PIC_UPLOAD_SUCCESS, fileName);
 
     }
 
