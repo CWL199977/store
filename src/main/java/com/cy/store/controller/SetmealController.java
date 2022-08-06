@@ -8,6 +8,7 @@ import com.cy.store.entity.QueryPageBean;
 import com.cy.store.entity.Result;
 import com.cy.store.pojo.Setmeal;
 import com.cy.store.service.SetmealService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-
+@Slf4j
 @RestController
 @RequestMapping("/setmeal")
 public class SetmealController {
